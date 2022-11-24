@@ -7,3 +7,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - null-ls source for routing LSP requests to a `b:buffls` object.
+- LSP requests routing based on Treesitter queries.

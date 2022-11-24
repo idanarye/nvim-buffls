@@ -23,6 +23,9 @@ M.null_ls_source = {
             if not found then
                 return
             end
+            if type(obj) == 'function' then
+                obj = obj()
+            end
             local method_name = LSP_METHODS_TO_OBJECT_METHODS[params.method]
             local method = obj[method_name]
             if method == nil then
@@ -32,5 +35,7 @@ M.null_ls_source = {
         end
     }
 }
+
+M.BufflsTsLs = require'buffls/based_on_treesitter'.BufflsTsLs
 
 return M
