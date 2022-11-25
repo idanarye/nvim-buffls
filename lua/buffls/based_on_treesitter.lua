@@ -53,6 +53,25 @@ function BufflsTsQueryHandlerContext:is_node_in_range(node)
     return true
 end
 
+function BufflsTsQueryHandlerContext:is_after_node(node)
+    if type(node) == 'string' then
+        node = self.nodes[node]
+    end
+    local _, _, sr, sc = node_range(node)
+    if range.end_row < sr then
+        return false
+    end
+    if range.end_row == sr and range.end_col < sc then
+        return false
+    end
+    if er < range.row then
+        return false
+    end
+    if er == range.row and ec <= range.col then
+        return false
+    end
+end
+
 ---@class BufflsTsQueryRouter
 ---@field language string
 ---@field private direct_generators function[]
@@ -83,6 +102,8 @@ function M.BufflsTsQueryRouter:add_ts_generator(query, generator)
         generator = generator,
     })
 end
+
+local whitespace_pattern = vim.regex[[^\s*$]]
 
 function M.BufflsTsQueryRouter:call_all(params, parser)
     local results = {}
@@ -132,6 +153,7 @@ function M.BufflsTsQueryRouter:call_all(params, parser)
         return '[' .. generator.query .. ']'
     end, self.ts_query_generators)
     local combined_query = vim.treesitter.query.parse_query(self.language, table.concat(queries))
+
     for query_idx, captures_array, metadata in combined_query:iter_matches(tstree:root(), params.bufnr) do
         local captures_dict = {}
         for capture_idx, capture_value in pairs(captures_array) do
@@ -142,7 +164,37 @@ function M.BufflsTsQueryRouter:call_all(params, parser)
             nodes = captures_dict,
             metadata = metadata,
         }, BufflsTsQueryHandlerContext)
-        if captures_dict.HERE == nil or ctx:is_node_in_range('HERE') then
+
+        local function should_visit()
+            if captures_dict.HERE then
+                return ctx:is_node_in_range('HERE')
+            elseif captures_dict.AFTER_HERE then
+                local _, _, ner, nec = captures_dict.AFTER_HERE:range()
+                nec = nec + 1
+                local r = params.row - 1
+                local c = params.col
+
+                if r < ner then
+                    return false
+                end
+                if r == ner and c < nec then
+                    return false
+                end
+                local text_to_here = table.concat(vim.api.nvim_buf_get_text(params.bufnr, ner, nec, r, c, {}))
+                if whitespace_pattern:match_str(text_to_here) then
+                    return true
+                end
+
+                local node_after = captures_dict.AFTER_HERE:next_sibling()
+                if node_after then
+                    return ctx:is_node_in_range(node_after)
+                end
+            else
+                return true
+            end
+        end
+
+        if should_visit() then
             local generator = self.ts_query_generators[query_idx].generator
             util.resilient(function()
                 local handler_result = generator(ctx)
