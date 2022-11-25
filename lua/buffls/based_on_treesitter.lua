@@ -20,6 +20,11 @@ function BufflsTsQueryHandlerContext:text(node)
     return vim.treesitter.get_node_text(node, self.params.bufnr)
 end
 
+local function node_range(node)
+    local sr, sc, er, ec = node:range()
+    return sr + 1, sc + 1, er + 1, ec + 1
+end
+
 ---@param node userdata|string The TreeSitter node to resolve, or the name of that match in self.nodes
 ---@return boolean
 function BufflsTsQueryHandlerContext:is_node_in_range(node)
@@ -32,11 +37,7 @@ function BufflsTsQueryHandlerContext:is_node_in_range(node)
         end_row = self.params.row,
         end_col = self.params.col,
     }
-    local sr, sc, er, ec = node:range()
-    sr = sr + 1
-    sc = sc + 1
-    er = er + 1
-    ec = ec + 1
+    local sr, sc, er, ec = node_range(node)
     if range.end_row < sr then
         return false
     end
@@ -46,7 +47,7 @@ function BufflsTsQueryHandlerContext:is_node_in_range(node)
     if er < range.row then
         return false
     end
-    if er == range.row and ec < range.col then
+    if er == range.row and ec <= range.col then
         return false
     end
     return true
