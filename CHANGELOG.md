@@ -8,3 +8,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - null-ls source for routing LSP requests to a `b:buffls` object.
 - LSP requests routing based on Treesitter queries.
+- A special wrapper for writing buffer langauge servers for Bash.

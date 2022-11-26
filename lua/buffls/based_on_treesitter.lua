@@ -4,6 +4,7 @@ local util = require'buffls/util'
 
 ---@class BufflsTsQueryHandlerContext
 ---@field params table
+---@field tstree userdata
 ---@field nodes {[string]: userdata}
 ---@field metadata table
 local BufflsTsQueryHandlerContext = {}
@@ -88,13 +89,13 @@ function M.BufflsTsQueryRouter:new(language)
     }, self)
 end
 
----@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]
+---@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]?
 function M.BufflsTsQueryRouter:add_direct_generator(generator)
     table.insert(self.direct_generators, generator)
 end
 
 ---@param query string
----@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]
+---@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]?
 function M.BufflsTsQueryRouter:add_ts_generator(query, generator)
     vim.treesitter.parse_query(self.language, query)
     table.insert(self.ts_query_generators, {
@@ -161,6 +162,7 @@ function M.BufflsTsQueryRouter:call_all(params, parser)
         end
         local ctx = setmetatable({
             params = params,
+            tstree = tstree,
             nodes = captures_dict,
             metadata = metadata,
         }, BufflsTsQueryHandlerContext)
@@ -272,7 +274,7 @@ function M.BufflsTsLs:add_action(title, action)
     end)
 end
 
----@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]
+---@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]?
 function M.BufflsTsLs:add_completions_direct_generator(generator)
     self.completion:add_direct_generator(function(params)
         local result = generator(params)
@@ -285,7 +287,7 @@ function M.BufflsTsLs:add_completions_direct_generator(generator)
 end
 
 ---@param query string
----@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]
+---@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]?
 function M.BufflsTsLs:add_completions_ts_generator(query, generator)
     self.completion:add_ts_generator(query, function(ctx)
         local result = generator(ctx)
