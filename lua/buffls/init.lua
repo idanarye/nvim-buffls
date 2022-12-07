@@ -1,3 +1,16 @@
+---@mod buffls BuffLS - Buffer Specific null-ls Source
+---@brief [[
+---BuffLS is a null-ls source for adding LSP-like functionality for a specific
+---buffer. This is useful for small scripts that use Neovim buffers for input,
+---and want to enhance their UX with things like custom completion or code
+---actions. Writing a separate null-ls source for each such script is too
+---cumbersome, so BuffLS acts as a single source that redirects the LSP
+---requests to objects stored in a buffer variable.
+---
+---BuffLS was created as a supplemental plugin for Moonicipal
+---(https://github.com/idanarye/nvim-moonicipal), but can be used independent
+---of it.
+---@brief ]]
 local M = {}
 
 local null_ls = require'null-ls'
