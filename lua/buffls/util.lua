@@ -10,11 +10,19 @@ function M.normalize_range(params)
     if params.lsp_params.range then
         return params.range
     else
+        local row, col
+        if params.lsp_params.position then
+            row = params.lsp_params.position.line + 1
+            col = params.lsp_params.position.character
+        else
+            row = params.row
+            col = params.col
+        end
         return {
-            row = params.row,
-            col = params.col,
-            end_row = params.row,
-            end_col = params.col,
+            row = row,
+            col = col,
+            end_row = row,
+            end_col = col,
         }
     end
 end

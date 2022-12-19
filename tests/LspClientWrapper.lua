@@ -51,4 +51,11 @@ function LspClientWrapper:run_action(action)
     })
 end
 
+function LspClientWrapper:get_completions(line, character)
+    return self:request_async('textDocument/completion', {
+        textDocument = self:text_document(),
+        position = {line = line, character = character}
+    })
+end
+
 return LspClientWrapper

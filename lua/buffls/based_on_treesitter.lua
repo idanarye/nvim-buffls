@@ -163,8 +163,8 @@ function M.BufflsTsQueryRouter:call_all(params, parser)
             elseif captures_dict.AFTER_HERE then
                 local _, _, ner, nec = captures_dict.AFTER_HERE:range()
                 nec = nec + 1
-                local r = params.row - 1
-                local c = params.col
+                local r = params.lsp_params.position.line
+                local c = params.lsp_params.position.character + 1
 
                 if r < ner then
                     return false

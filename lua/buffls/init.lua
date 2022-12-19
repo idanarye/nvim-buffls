@@ -17,12 +17,12 @@ local null_ls = require'null-ls'
 
 local LSP_METHODS_TO_OBJECT_METHODS = {
     [null_ls.methods.CODE_ACTION] = "actions",
-    --[null_ls.methods.DIAGNOSTICS] = "diagnostics",
-    --[null_ls.methods.DIAGNOSTICS_ON_OPEN] = "diagnostics",
-    --[null_ls.methods.DIAGNOSTICS_ON_SAVE] = "diagnostics",
-    --[null_ls.methods.FORMATTING] = "formatting",
-    --[null_ls.methods.RANGE_FORMATTING] = "formatting",
-    --[null_ls.methods.HOVER] = "hover",
+    [null_ls.methods.DIAGNOSTICS] = "diagnostics",
+    [null_ls.methods.DIAGNOSTICS_ON_OPEN] = "diagnostics",
+    [null_ls.methods.DIAGNOSTICS_ON_SAVE] = "diagnostics",
+    [null_ls.methods.FORMATTING] = "formatting",
+    [null_ls.methods.RANGE_FORMATTING] = "formatting",
+    [null_ls.methods.HOVER] = "hover",
     [null_ls.methods.COMPLETION] = "completion",
 }
 

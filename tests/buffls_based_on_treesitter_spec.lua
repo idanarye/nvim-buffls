@@ -14,4 +14,29 @@ describe('buffls based on treesitter', function()
         client:run_action(actions.foo)
         assert.are.same(output, {'foo', 'bar', 'foo'})
     end)
+
+    it('Suggests completions', function()
+        local ls, client = SingleBufflsWindow('bash', {
+            'command1 ',
+            'command2 ',
+        })
+        ls:add_completions_ts_generator('((command) @AFTER_HERE (#eq? @AFTER_HERE "command1"))', function()
+            return {{
+                label = 'completion1',
+            }}
+        end)
+        ls:add_completions_ts_generator('((command) @AFTER_HERE (#eq? @AFTER_HERE "command2"))', function()
+            return {{
+                label = 'completion2',
+            }}
+        end)
+        ls:add_completions_ts_generator('((command) @HERE (#eq? @HERE "command1"))', function()
+            return {{
+                label = 'command1-completion',
+            }}
+        end)
+        assert.are.same(client:get_completions(0, 9).items, {{ label = "completion1" }})
+        assert.are.same(client:get_completions(1, 9).items, {{ label = "completion2" }})
+        assert.are.same(client:get_completions(0, 7).items, {{ label = "command1-completion" }})
+    end)
 end)
