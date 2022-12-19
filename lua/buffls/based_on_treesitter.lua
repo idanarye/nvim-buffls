@@ -32,12 +32,7 @@ function BufflsTsQueryHandlerContext:is_node_in_range(node)
     if type(node) == 'string' then
         node = self.nodes[node]
     end
-    local range = self.params.range or {
-        row = self.params.row,
-        col = self.params.col,
-        end_row = self.params.row,
-        end_col = self.params.col,
-    }
+    local range = util.normalize_range(self.params)
     local sr, sc, er, ec = node_range(node)
     if range.end_row < sr then
         return false
@@ -122,12 +117,7 @@ function M.BufflsTsQueryRouter:call_all(params, parser)
         end)
     end
 
-    local range = params.range or {
-        row = params.row,
-        col = params.col,
-        end_row = params.row,
-        end_col = params.col,
-    }
+    local range = util.normalize_range(params)
     local function is_node_in_range(node)
         local sr, sc, er, ec = node:range()
         sr = sr + 1
