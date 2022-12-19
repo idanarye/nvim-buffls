@@ -10,6 +10,7 @@ require'null-ls'.setup {
 }
 require'nvim-treesitter.configs'.setup {
     ensure_installed = { "bash" };
+    sync_install = true,
 }
 
 function EnsureSingleWindow()
