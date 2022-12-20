@@ -4,7 +4,7 @@ describe('BuffLS for Bash', function()
             'command --foo bar --baz qux',
         })
 
-        local bash_ls = require'buffls/bash'(ls)
+        local bash_ls = require'buffls/ForBash':wrap(ls)
         bash_ls:add_flag('--baz', function()
             return {{
                 label = 'qux',

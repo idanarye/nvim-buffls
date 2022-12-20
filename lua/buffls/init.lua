@@ -54,6 +54,4 @@ M.null_ls_source = {
     }
 }
 
-M.BufflsTsLs = require'buffls/based_on_treesitter'.BufflsTsLs
-
 return M

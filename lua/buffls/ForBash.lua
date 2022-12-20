@@ -44,10 +44,10 @@ end
 
 ---@param ls BufflsTsLs
 ---@return BufflsForBash
-return function(ls)
+function BufflsForBash:wrap(ls)
     local bash_wrapper = setmetatable({
         flags = {}
-    }, BufflsForBash)
+    }, self)
 
     ls:add_completions_ts_generator('((word) @flag (#match? @flag "^-")) @HERE', function(ctx)
         local result = {}
@@ -86,3 +86,5 @@ return function(ls)
 
     return bash_wrapper
 end
+
+return BufflsForBash
