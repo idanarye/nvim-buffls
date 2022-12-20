@@ -15,6 +15,8 @@ local M = {}
 
 local null_ls = require'null-ls'
 
+local util = require'buffls/util'
+
 local LSP_METHODS_TO_OBJECT_METHODS = {
     [null_ls.methods.CODE_ACTION] = "actions",
     [null_ls.methods.DIAGNOSTICS] = "diagnostics",
@@ -44,23 +46,7 @@ M.null_ls_source = {
             if method == nil then
                 return
             end
-            local success, result = xpcall(method, function(error)
-                if type(error) == 'table' then
-                    local abort_message = error[ABORT_KEY]
-                    if abort_message ~= nil then
-                        if abort_message then
-                            vim.api.nvim_err_writeln(abort_message)
-                        end
-                        return
-                    end
-                end
-                if type(error) ~= 'string' then
-                    error = vim.inspect(error)
-                end
-                local traceback = debug.traceback(error, 2)
-                traceback = string.gsub(traceback, '\t', string.rep(' ', 8))
-                vim.api.nvim_err_writeln(traceback)
-            end, obj, params)
+            local success, result = util.resilient(method, obj, params)
             if success then
                 return result
             end

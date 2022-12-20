@@ -1,8 +1,13 @@
 local M = {}
 
 function M.resilient(fn, ...)
-    xpcall(fn, function(err)
-        vim.api.nvim_err_writeln(debug.traceback(err, 2))
+    return xpcall(fn, function(error)
+        if type(error) ~= 'string' then
+            error = vim.inspect(error)
+        end
+        local traceback = debug.traceback(error, 2)
+        traceback = string.gsub(traceback, '\t', string.rep(' ', 8))
+        vim.api.nvim_err_writeln(traceback)
     end, ...)
 end
 
