@@ -1,6 +1,8 @@
----@class BufflsForBash
+local BufflsTsLs = require'buffls/TsLs'
+
+---@class BufflsForBash: BufflsTsLs
 ---@field package flags table
-local BufflsForBash = {}
+local BufflsForBash = setmetatable({}, {__index = BufflsTsLs})
 
 ---@private
 BufflsForBash.__index = BufflsForBash
@@ -42,17 +44,15 @@ local function find_real_word_for_completion(ctx)
     return ''
 end
 
----@param ls BufflsTsLs
 ---@return BufflsForBash
-function BufflsForBash:wrap(ls)
-    local bash_wrapper = setmetatable({
-        flags = {}
-    }, self)
+function BufflsForBash:new()
+    local ls = setmetatable(BufflsTsLs:new('bash'), self)
+    ls.flags = {}
 
     ls:add_completions_ts_generator('((word) @flag (#match? @flag "^-")) @HERE', function(ctx)
         local result = {}
         local real_word = find_real_word_for_completion(ctx)
-        for flag in pairs(bash_wrapper.flags) do
+        for flag in pairs(ls.flags) do
             if vim.startswith(flag, real_word) then
                 table.insert(result, {label=flag})
             end
@@ -60,7 +60,7 @@ function BufflsForBash:wrap(ls)
         return result
     end)
     ls:add_completions_ts_generator('((word) @flag (#match? @flag "^-")) @AFTER_HERE', function(ctx)
-        local flag_args = bash_wrapper.flags[ctx:text('flag')]
+        local flag_args = ls.flags[ctx:text('flag')]
         if not flag_args then
             return
         end
@@ -84,7 +84,7 @@ function BufflsForBash:wrap(ls)
         return result
     end)
 
-    return bash_wrapper
+    return ls
 end
 
 return BufflsForBash

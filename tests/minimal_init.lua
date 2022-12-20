@@ -24,12 +24,15 @@ function EnsureSingleWindow()
 end
 
 local buffls_file_nr = 0
-function SingleBufflsWindow(filetype, lines)
+function SingleBufflsWindow(filetype, lines, ls_cls)
+    if ls_cls == nil then
+        ls_cls = require'buffls/TsLs'
+    end
     buffls_file_nr = buffls_file_nr + 1
     vim.cmd.setfiletype(filetype)
     vim.cmd.file('buffls-test-buffer-' .. vim.loop.getpid() .. '-' .. buffls_file_nr)
     vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
-    local ls = require'buffls/TsLs':for_buffer(vim.api.nvim_get_current_buf())
+    local ls = ls_cls:for_buffer(vim.api.nvim_get_current_buf())
     local client = WaitFor(1, function()
         return require'tests/LspClientWrapper':new(0)
     end)
