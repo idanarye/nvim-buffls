@@ -20,6 +20,17 @@ function LspClientWrapper:text_document()
     }
 end
 
+function LspClientWrapper:get_position_from_cursor()
+    if vim.api.nvim_get_current_buf() ~= self.bufnr then
+        error('Cannot call client.position unless in the buffer')
+    end
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    return {
+        line = cursor[1] - 1,
+        character = cursor[2],
+    }
+end
+
 function LspClientWrapper:request_async(command, params)
     local co = coroutine.running()
     self.client.request(command, params, function(_, result)
@@ -28,17 +39,17 @@ function LspClientWrapper:request_async(command, params)
     return coroutine.yield()
 end
 
-function LspClientWrapper:get_code_actions(line, character)
-    local pos = {line = line, character = character}
+function LspClientWrapper:get_code_actions()
+    local pos = self:get_position_from_cursor()
     return self:request_async('textDocument/codeAction', {
         textDocument = self:text_document(),
         range = {start = pos, ['end'] = pos},
     })
 end
 
-function LspClientWrapper:get_code_actions_as_table(line, character)
+function LspClientWrapper:get_code_actions_as_table()
     local result = {}
-    for _, action in ipairs(self:get_code_actions(line, character)) do
+    for _, action in ipairs(self:get_code_actions()) do
         result[action.title] = action
     end
     return result
@@ -51,10 +62,10 @@ function LspClientWrapper:run_action(action)
     })
 end
 
-function LspClientWrapper:get_completions(line, character)
+function LspClientWrapper:get_completions()
     return self:request_async('textDocument/completion', {
         textDocument = self:text_document(),
-        position = {line = line, character = character}
+        position = self:get_position_from_cursor(),
     })
 end
 

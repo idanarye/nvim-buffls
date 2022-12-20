@@ -1,4 +1,4 @@
-describe('buffls based on treesitter', function()
+describe('BuffLS based on treesitter', function()
     it('Runs code actions', function()
         local ls, client = SingleBufflsWindow('bash', {'echo hello world'})
         local output = {}
@@ -8,7 +8,7 @@ describe('buffls based on treesitter', function()
         ls:add_action('bar', function()
             table.insert(output, 'bar')
         end)
-        local actions = client:get_code_actions_as_table(0, 0)
+        local actions = client:get_code_actions_as_table()
         client:run_action(actions.foo)
         client:run_action(actions.bar)
         client:run_action(actions.foo)
@@ -19,6 +19,7 @@ describe('buffls based on treesitter', function()
         local ls, client = SingleBufflsWindow('bash', {
             'command1 ',
             'command2 ',
+            'command3 ',
         })
         ls:add_completions_ts_generator('((command) @AFTER_HERE (#eq? @AFTER_HERE "command1"))', function()
             return {{
@@ -30,13 +31,16 @@ describe('buffls based on treesitter', function()
                 label = 'completion2',
             }}
         end)
-        ls:add_completions_ts_generator('((command) @HERE (#eq? @HERE "command1"))', function()
+        ls:add_completions_ts_generator('((command) @HERE (#eq? @HERE "command3"))', function()
             return {{
-                label = 'command1-completion',
+                label = 'command3-completion',
             }}
         end)
-        assert.are.same(client:get_completions(0, 9).items, {{ label = "completion1" }})
-        assert.are.same(client:get_completions(1, 9).items, {{ label = "completion2" }})
-        assert.are.same(client:get_completions(0, 7).items, {{ label = "command1-completion" }})
+        vim.api.nvim_win_set_cursor(0, {1, 9})
+        assert.are.same(client:get_completions().items, {{ label = "completion1" }})
+        vim.api.nvim_win_set_cursor(0, {2, 9})
+        assert.are.same(client:get_completions().items, {{ label = "completion2" }})
+        vim.api.nvim_win_set_cursor(0, {3, 7})
+        assert.are.same(client:get_completions().items, {{ label = "command3-completion" }})
     end)
 end)
