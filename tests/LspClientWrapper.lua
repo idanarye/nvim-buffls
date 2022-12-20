@@ -69,4 +69,10 @@ function LspClientWrapper:get_completions()
     })
 end
 
+function LspClientWrapper:get_completion_labels_sorted()
+    local completions = self:get_completions()
+    local completion_labels = vim.tbl_map(function(c) return c.label end, completions.items)
+    return vim.fn.sort(completion_labels)
+end
+
 return LspClientWrapper

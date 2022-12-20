@@ -65,7 +65,6 @@ return function(ls)
             return
         end
         local real_word = find_real_word_for_completion(ctx)
-        dump('real_word', real_word)
         local possible_args = flag_args(real_word)
         if not possible_args then
             return
