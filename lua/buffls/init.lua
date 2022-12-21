@@ -14,8 +14,6 @@
 
 ---@toc buffls.contents
 
-local M = {}
-
 local null_ls = require'null-ls'
 
 local util = require'buffls/util'
@@ -31,7 +29,7 @@ local LSP_METHODS_TO_OBJECT_METHODS = {
     [null_ls.methods.COMPLETION] = "completion",
 }
 
-M.null_ls_source = {
+local nullls_source = {
     name = 'buffls-proxy',
     method = vim.tbl_keys(LSP_METHODS_TO_OBJECT_METHODS),
     filetypes = { '_all' },
@@ -57,4 +55,4 @@ M.null_ls_source = {
     }
 }
 
-return M
+return nullls_source

@@ -16,10 +16,23 @@ of it.
 Table of Contents                                              *buffls.contents*
 
 BuffLS - Buffer Specific null-ls Source·································|buffls|
+BuffLS setup······················································|buffls-setup|
 BuffLS based on TreeSitter queries··································|BufflsTsLs|
 TS-based router for specific LSP request type··············|BufflsTsQueryRouter|
 TS-based context for handling LSP request··········|BufflsTsQueryHandlerContext|
 BuffLS for Bash buffer···········································|BufflsForBash|
+
+================================================================================
+BuffLS setup                                                      *buffls-setup*
+
+Register the BuffLS source in null-ls:
+>
+    require('null-ls').setup {
+        sources = {
+            require('buffls'),
+        };
+    }
+<
 
 ================================================================================
 BuffLS based on TreeSitter queries                                  *BufflsTsLs*
