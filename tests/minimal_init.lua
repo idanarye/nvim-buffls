@@ -7,7 +7,7 @@ vim.o.virtualedit = 'all' -- to support end of line completions without going in
 
 require'null-ls'.setup {
     sources = {
-        require'buffls'.null_ls_source,
+        require'buffls',
     },
 }
 require'nvim-treesitter.configs'.setup {
