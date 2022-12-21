@@ -1,8 +1,8 @@
 ---@mod BufflsTsQueryRouter TS-based router for specific LSP request type
 
-local util = require'buffls/util'
+local util = require'buffls.util'
 
-local BufflsTsQueryHandlerContext = require'buffls/TsQueryHandlerContext'
+local BufflsTsQueryHandlerContext = require'buffls.TsQueryHandlerContext'
 
 ---@class BufflsTsQueryRouter
 ---@field language string

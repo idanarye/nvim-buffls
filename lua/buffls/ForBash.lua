@@ -1,6 +1,6 @@
 ---@mod BufflsForBash BuffLS for Bash buffer
 
-local BufflsTsLs = require'buffls/TsLs'
+local BufflsTsLs = require'buffls.TsLs'
 
 ---@class BufflsForBash: BufflsTsLs
 ---@field package flags table

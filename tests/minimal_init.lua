@@ -26,7 +26,7 @@ end
 local buffls_file_nr = 0
 function SingleBufflsWindow(filetype, lines, ls_cls)
     if ls_cls == nil then
-        ls_cls = require'buffls/TsLs'
+        ls_cls = require'buffls.TsLs'
     end
     buffls_file_nr = buffls_file_nr + 1
     vim.cmd.setfiletype(filetype)

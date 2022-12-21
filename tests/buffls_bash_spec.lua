@@ -1,5 +1,5 @@
 describe('BuffLS for Bash', function()
-    local BufflsForBash = require'buffls/ForBash'
+    local BufflsForBash = require'buffls.ForBash'
     it('Suggests completions', function()
         local ls, client = SingleBufflsWindow('bash', {
             'command --foo bar --baz qux',

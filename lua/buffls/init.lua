@@ -16,7 +16,7 @@
 
 local null_ls = require'null-ls'
 
-local util = require'buffls/util'
+local util = require'buffls.util'
 
 local LSP_METHODS_TO_OBJECT_METHODS = {
     [null_ls.methods.CODE_ACTION] = "actions",

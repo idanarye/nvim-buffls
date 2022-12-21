@@ -1,6 +1,6 @@
 ---@mod BufflsTsLs BuffLS based on TreeSitter queries
 
-local BufflsTsQueryRouter = require'buffls/TsQueryRouter'
+local BufflsTsQueryRouter = require'buffls.TsQueryRouter'
 
 ---@class BufflsTsLs
 ---@field language string

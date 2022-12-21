@@ -15,7 +15,7 @@
 ---1. Create a buffer and set it to the appropriate langauge
 ---2. Create a BuffLS for that buffer: >
 ---       local bufnr = vim.api.nvim_get_current_buf()
----       local ls = require'buffls/TsLs':for_buffer(bufnr)
+---       local ls = require'buffls.TsLs':for_buffer(bufnr)
 ---<   Choose the appropriate BuffLS class:
 ---   - *BufflsTsLs* for using manually written TreeSitter queries. (like in
 ---     the example)
