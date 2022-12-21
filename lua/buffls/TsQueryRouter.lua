@@ -37,6 +37,7 @@ end
 
 local whitespace_pattern = vim.regex[[^\s*$]]
 
+---@private
 function BufflsTsQueryRouter:call_all(params, parser)
     local results = {}
     local results_len = 0
@@ -140,6 +141,7 @@ function BufflsTsQueryRouter:call_all(params, parser)
     end
 end
 
+---@private
 function BufflsTsQueryRouter:__call(ls, params)
     if params == nil then
         params = ls

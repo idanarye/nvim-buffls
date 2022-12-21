@@ -55,23 +55,40 @@ BuffLS basic usage                                          *buffls-basic-usage*
 BuffLS based on TreeSitter queries                                  *BufflsTsLs*
 
 BufflsTsLs                                                          *BufflsTsLs*
+    A BuffLS that uses TreeSitter queries. It has |BufflsTsQueryRouter| fields
+    for adding handlers directly, which must return their output in null-ls'
+    format. It also provides helper methods for when that structure is too
+    complicated for basic usage (e.g. - for code actions just giving a name and
+    function is often enough for most of BuffLS' use cases)
 
     Fields: ~
-        {language}     (string)
-        {actions}      (BufflsTsQueryRouter)
-        {diagnostics}  (BufflsTsQueryRouter)
-        {formatting}   (BufflsTsQueryRouter)
-        {hover}        (BufflsTsQueryRouter)
-        {completion}   (BufflsTsQueryRouter)
+        {language}     (string)               the language for TS queries
+        {actions}      (BufflsTsQueryRouter)  handles LSP code actions
+        {diagnostics}  (BufflsTsQueryRouter)  handles LSP diagnostics
+        {formatting}   (BufflsTsQueryRouter)  handles LSP formatting
+        {hover}        (BufflsTsQueryRouter)  handles LSP hover (sig&doc preview)
+        {completion}   (BufflsTsQueryRouter)  handles LSP completion
 
 
-BufflsTsLs:new()                                                *BufflsTsLs:new*
+BufflsTsLs:new({language})                                      *BufflsTsLs:new*
+    Create a BuffLS without a buffer. The specified language must be
+    installed (see |:TSInstall|). |BufflsTsLs:for_buffer| is usually preferred.
+
+    Parameters: ~
+        {language}  (string)  the language for TS queries
+
+    Returns: ~
+        (BufflsTsLs)
 
 
 BufflsTsLs:for_buffer({bufnr?})                          *BufflsTsLs:for_buffer*
+    Assign a BuffLS to a buffer. Can be called on an existing BuffLS, or on the
+    class itself to create a new langauge server and immediately attach it to a
+    buffer. In the latter case, the BuffLS will use the 'filetype' of the buffer
+    as its `langauge`.
 
     Parameters: ~
-        {bufnr?}  (integer)
+        {bufnr?}  (integer)  the buffer number. Leave empty for current buffer.
 
     Returns: ~
         (BufflsTsLs)
@@ -80,16 +97,28 @@ BufflsTsLs:for_buffer({bufnr?})                          *BufflsTsLs:for_buffer*
 BufflsTsLs:add_action({title}, {action})                 *BufflsTsLs:add_action*
 
     Parameters: ~
-        {title}   (string)
-        {action}  (function)
+        {title}   (string)    the text to display to the use when choosing actions
+        {action}  (function)  the action itself
 
 
                                    *BufflsTsLs:add_completions_direct_generator*
 BufflsTsLs:add_completions_direct_generator()
+    Register a function that generates a list of code completions.
+
+    Unlike null-ls' format, here the generator does not need to put the
+    completions under an `items` field.
 
 
                                        *BufflsTsLs:add_completions_ts_generator*
 BufflsTsLs:add_completions_ts_generator()
+    Register a function that generates a list of code completions only when the
+    cursor position matches the TreeSitter query.
+
+    Unlike null-ls' format, here the generator does not need to put the
+    completions under an `items` field.
+
+    Refer to |BufflsTsQueryRouter:add_ts_generator| to learn how TreeSitter
+    queries interface with `BufflsTsLs` generators.
 
 
 ================================================================================
@@ -112,12 +141,6 @@ BufflsTsQueryRouter:add_direct_generator()
 
 
 BufflsTsQueryRouter:add_ts_generator()    *BufflsTsQueryRouter:add_ts_generator*
-
-
-BufflsTsQueryRouter:call_all()                    *BufflsTsQueryRouter:call_all*
-
-
-BufflsTsQueryRouter:__call()                        *BufflsTsQueryRouter:__call*
 
 
 ================================================================================
