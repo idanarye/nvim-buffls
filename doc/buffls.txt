@@ -125,22 +125,45 @@ BufflsTsLs:add_completions_ts_generator()
 TS-based router for specific LSP request type              *BufflsTsQueryRouter*
 
 BufflsTsQueryRouter                                        *BufflsTsQueryRouter*
+    Responsible for a single type of LSP request that a |BufflsTsLs| handles.
+    For each such request, it'll run all the generators registered on it can
+    concatenate their results.
 
     Fields: ~
-        {language}  (string)
-
-
-BufflsTsQueryRouter:new()                              *BufflsTsQueryRouter:new*
-
-    Returns: ~
-        (BufflsTsQueryRouter)
+        {language}  (string)  the language for TS queries
 
 
                                       *BufflsTsQueryRouter:add_direct_generator*
-BufflsTsQueryRouter:add_direct_generator()
+BufflsTsQueryRouter:add_direct_generator({generator})
+    Register a function that receives the parameters object from null-ls and
+    returns a result in null-ls' format. This means that it needs to return a
+    list of results.
+
+    Parameters: ~
+        {generator}  (function)
 
 
-BufflsTsQueryRouter:add_ts_generator()    *BufflsTsQueryRouter:add_ts_generator*
+                                          *BufflsTsQueryRouter:add_ts_generator*
+BufflsTsQueryRouter:add_ts_generator({query}, {generator})
+    Register a |BufflsTsGenerator| that runs only when the specified query
+    matches the cursor's position.
+
+    A query matches the cursor position if one of these two things happen:
+     - The cursor is on a node that the query captures using `@HERE`.
+     - The cursor is after a node that the query captures using `@AFTER_HERE`.
+
+    Parameters: ~
+        {query}      (string)             a TreeSitter query
+        {generator}  (BufflsTsGenerator)
+
+
+BufflsTsGenerator                                            *BufflsTsGenerator*
+    A function that receives a |BufflsTsQueryHandlerContext| and responds to a
+    particualr LSP request type using null-ls format. This means that it needs
+    to return a list of results.
+
+    Type: ~
+        fun(ctx:BufflsTsQueryHandlerContext):table[]
 
 
 ================================================================================

@@ -4,13 +4,17 @@ local util = require'buffls.util'
 
 local BufflsTsQueryHandlerContext = require'buffls.TsQueryHandlerContext'
 
+---Responsible for a single type of LSP request that a |BufflsTsLs| handles.
+---For each such request, it'll run all the generators registered on it can
+---concatenate their results.
 ---@class BufflsTsQueryRouter
----@field language string
+---@field language string the language for TS queries
 ---@field private direct_generators function[]
 ---@field private ts_query_generators function[]
 local BufflsTsQueryRouter = {}
 BufflsTsQueryRouter.__index = BufflsTsQueryRouter
 
+---@private
 ---@return BufflsTsQueryRouter
 function BufflsTsQueryRouter:new(language)
     return setmetatable({
@@ -20,13 +24,22 @@ function BufflsTsQueryRouter:new(language)
     }, self)
 end
 
----@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]?
+---Register a function that receives the parameters object from null-ls and
+---returns a result in null-ls' format. This means that it needs to return a
+---list of results.
+---@param generator function
 function BufflsTsQueryRouter:add_direct_generator(generator)
     table.insert(self.direct_generators, generator)
 end
 
----@param query string
----@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]?
+---Register a |BufflsTsGenerator| that runs only when the specified query
+---matches the cursor's position.
+---
+---A query matches the cursor position if one of these two things happen:
+--- - The cursor is on a node that the query captures using `@HERE`.
+--- - The cursor is after a node that the query captures using `@AFTER_HERE`.
+---@param query string a TreeSitter query
+---@param generator BufflsTsGenerator
 function BufflsTsQueryRouter:add_ts_generator(query, generator)
     vim.treesitter.parse_query(self.language, query)
     table.insert(self.ts_query_generators, {
@@ -34,6 +47,11 @@ function BufflsTsQueryRouter:add_ts_generator(query, generator)
         generator = generator,
     })
 end
+
+---A function that receives a |BufflsTsQueryHandlerContext| and responds to a
+---particualr LSP request type using null-ls format. This means that it needs
+---to return a list of results.
+---@alias BufflsTsGenerator fun(ctx: BufflsTsQueryHandlerContext): table[]?
 
 local whitespace_pattern = vim.regex[[^\s*$]]
 
@@ -97,7 +115,8 @@ function BufflsTsQueryRouter:call_all(params, parser)
         local function should_visit()
             if captures_dict.HERE then
                 return ctx:is_node_in_range('HERE')
-            elseif captures_dict.AFTER_HERE then
+            end
+            if captures_dict.AFTER_HERE then
                 local _, _, ner, nec = captures_dict.AFTER_HERE:range()
                 nec = nec + 1
                 local r = params.row - 1
