@@ -1,3 +1,5 @@
+---@mod BufflsTsQueryHandlerContext TS-based context for handling LSP request
+
 local util = require'buffls/util'
 
 ---@class BufflsTsQueryHandlerContext

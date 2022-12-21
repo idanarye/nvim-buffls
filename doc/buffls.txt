@@ -12,4 +12,133 @@ BuffLS was created as a supplemental plugin for Moonicipal
 (https://github.com/idanarye/nvim-moonicipal), but can be used independent
 of it.
 
+================================================================================
+Table of Contents                                              *buffls.contents*
+
+BuffLS - Buffer Specific null-ls Source·································|buffls|
+BuffLS based on TreeSitter queries··································|BufflsTsLs|
+TS-based router for specific LSP request type··············|BufflsTsQueryRouter|
+TS-based context for handling LSP request··········|BufflsTsQueryHandlerContext|
+BuffLS for Bash buffer···········································|BufflsForBash|
+
+================================================================================
+BuffLS based on TreeSitter queries                                  *BufflsTsLs*
+
+BufflsTsLs                                                          *BufflsTsLs*
+
+    Fields: ~
+        {language}     (string)
+        {actions}      (BufflsTsQueryRouter)
+        {diagnostics}  (BufflsTsQueryRouter)
+        {formatting}   (BufflsTsQueryRouter)
+        {hover}        (BufflsTsQueryRouter)
+        {completion}   (BufflsTsQueryRouter)
+
+
+BufflsTsLs:new()                                                *BufflsTsLs:new*
+
+
+BufflsTsLs:for_buffer({bufnr?})                          *BufflsTsLs:for_buffer*
+
+    Parameters: ~
+        {bufnr?}  (integer)
+
+    Returns: ~
+        (BufflsTsLs)
+
+
+BufflsTsLs:add_action({title}, {action})                 *BufflsTsLs:add_action*
+
+    Parameters: ~
+        {title}   (string)
+        {action}  (function)
+
+
+                                   *BufflsTsLs:add_completions_direct_generator*
+BufflsTsLs:add_completions_direct_generator()
+
+
+                                       *BufflsTsLs:add_completions_ts_generator*
+BufflsTsLs:add_completions_ts_generator()
+
+
+================================================================================
+TS-based router for specific LSP request type              *BufflsTsQueryRouter*
+
+BufflsTsQueryRouter                                        *BufflsTsQueryRouter*
+
+    Fields: ~
+        {language}  (string)
+
+
+BufflsTsQueryRouter:new()                              *BufflsTsQueryRouter:new*
+
+    Returns: ~
+        (BufflsTsQueryRouter)
+
+
+                                      *BufflsTsQueryRouter:add_direct_generator*
+BufflsTsQueryRouter:add_direct_generator()
+
+
+BufflsTsQueryRouter:add_ts_generator()    *BufflsTsQueryRouter:add_ts_generator*
+
+
+BufflsTsQueryRouter:call_all()                    *BufflsTsQueryRouter:call_all*
+
+
+BufflsTsQueryRouter:__call()                        *BufflsTsQueryRouter:__call*
+
+
+================================================================================
+TS-based context for handling LSP request          *BufflsTsQueryHandlerContext*
+
+BufflsTsQueryHandlerContext                        *BufflsTsQueryHandlerContext*
+
+    Fields: ~
+        {params}  (table)
+        {tstree}  (userdata)
+        {nodes}   ()
+
+
+BufflsTsQueryHandlerContext:text({node})      *BufflsTsQueryHandlerContext:text*
+
+    Parameters: ~
+        {node}  (userdata|string)  The TreeSitter node to resolve, or the name of that match in self.nodes
+                                   @return string?
+
+
+                                  *BufflsTsQueryHandlerContext:is_node_in_range*
+BufflsTsQueryHandlerContext:is_node_in_range({node})
+
+    Parameters: ~
+        {node}  (userdata|string)  The TreeSitter node to resolve, or the name of that match in self.nodes
+
+    Returns: ~
+        (boolean)
+
+
+                                     *BufflsTsQueryHandlerContext:is_after_node*
+BufflsTsQueryHandlerContext:is_after_node()
+
+
+================================================================================
+BuffLS for Bash buffer                                           *BufflsForBash*
+
+BufflsForBash                                                    *BufflsForBash*
+
+
+BufflsForBash:add_flag({flag}, {args?})                 *BufflsForBash:add_flag*
+
+    Parameters: ~
+        {flag}   (string|string[])
+        {args?}  (string|table[]|function)
+
+
+BufflsForBash:new()                                          *BufflsForBash:new*
+
+    Returns: ~
+        (BufflsForBash)
+
+
 vim:tw=78:ts=8:noet:ft=help:norl:

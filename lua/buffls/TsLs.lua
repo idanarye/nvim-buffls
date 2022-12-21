@@ -1,3 +1,5 @@
+---@mod BufflsTsLs BuffLS based on TreeSitter queries
+
 local BufflsTsQueryRouter = require'buffls/TsQueryRouter'
 
 ---@class BufflsTsLs

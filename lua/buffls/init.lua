@@ -11,6 +11,9 @@
 ---(https://github.com/idanarye/nvim-moonicipal), but can be used independent
 ---of it.
 ---@brief ]]
+
+---@toc buffls.contents
+
 local M = {}
 
 local null_ls = require'null-ls'
