@@ -2,6 +2,10 @@
 
 local BufflsTsLs = require'buffls.TsLs'
 
+---An extension to |BufflsTsLs| for working with with Bash buffers.
+---
+---Create and register instances of with `for_buffer` like you would a
+---|BufflsTsLs|.
 ---@class BufflsForBash: BufflsTsLs
 ---@field package flags table
 local BufflsForBash = setmetatable({}, {__index = BufflsTsLs})
@@ -9,8 +13,17 @@ local BufflsForBash = setmetatable({}, {__index = BufflsTsLs})
 ---@private
 BufflsForBash.__index = BufflsForBash
 
----@param flag string|string[]
----@param args? (string|table)[]|function
+---Add completion for a flag.
+---
+---The flag name(s) must be given together with the preceding `-` or `--`. The
+---argument can be:
+---- Omitted for argumentless flags.
+---- A list of possible flags.
+---- A function that returns a list of possible flags.
+---For the list/function, each flag must either be a string or an LSP
+---completion item.
+---@param flag string|string[] the name of the flag. Table for multiple names
+---@param args? (string|table)[]|function the options for flag arguments
 function BufflsForBash:add_flag(flag, args)
     if type(flag) == 'string' then
         flag = {flag}
@@ -46,6 +59,7 @@ local function find_real_word_for_completion(ctx)
     return ''
 end
 
+---@private
 ---@return BufflsForBash
 function BufflsForBash:new()
     local ls = setmetatable(BufflsTsLs:new('bash'), self)

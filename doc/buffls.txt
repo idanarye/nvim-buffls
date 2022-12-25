@@ -221,19 +221,26 @@ BufflsTsQueryHandlerContext:is_after_node({node})
 BuffLS for Bash buffer                                           *BufflsForBash*
 
 BufflsForBash                                                    *BufflsForBash*
+    An extension to |BufflsTsLs| for working with with Bash buffers.
+
+    Create and register instances of with `for_buffer` like you would a
+    |BufflsTsLs|.
 
 
 BufflsForBash:add_flag({flag}, {args?})                 *BufflsForBash:add_flag*
+    Add completion for a flag.
+
+    The flag name(s) must be given together with the preceding `-` or `--`. The
+    argument can be:
+    - Omitted for argumentless flags.
+    - A list of possible flags.
+    - A function that returns a list of possible flags.
+    For the list/function, each flag must either be a string or an LSP
+    completion item.
 
     Parameters: ~
-        {flag}   (string|string[])
-        {args?}  (string|table[]|function)
-
-
-BufflsForBash:new()                                          *BufflsForBash:new*
-
-    Returns: ~
-        (BufflsForBash)
+        {flag}   (string|string[])          the name of the flag. Table for multiple names
+        {args?}  (string|table[]|function)  the options for flag arguments
 
 
 vim:tw=78:ts=8:noet:ft=help:norl:
