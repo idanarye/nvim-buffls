@@ -170,22 +170,34 @@ BufflsTsGenerator                                            *BufflsTsGenerator*
 TS-based context for handling LSP request          *BufflsTsQueryHandlerContext*
 
 BufflsTsQueryHandlerContext                        *BufflsTsQueryHandlerContext*
+    The context passed to |BufflsTsLs| query-based generators.
+
+    Generators registered in |BufflsTsLs:add_ts_generator| receive a context
+    object of this type, which they can use to access data from the query's
+    match.
 
     Fields: ~
-        {params}  (table)
-        {tstree}  (userdata)
-        {nodes}   ()
+        {params}    (table)     the null-ls parameters object
+        {tstree}    (userdata)  the entire TS tree of the buffer
+        {metadata}  (table)     the TS query's metadata
+        {nodes}     ()
 
 
 BufflsTsQueryHandlerContext:text({node})      *BufflsTsQueryHandlerContext:text*
+    Resolve a TS node to the text it represents.
 
     Parameters: ~
         {node}  (userdata|string)  The TreeSitter node to resolve, or the name of that match in self.nodes
-                                   @return string?
+
+    Returns: ~
+        (string)
 
 
                                   *BufflsTsQueryHandlerContext:is_node_in_range*
 BufflsTsQueryHandlerContext:is_node_in_range({node})
+    Check if a the cursor if within a node.
+
+    For LSP requests that send a range, this checks if the node overlaps with the range.
 
     Parameters: ~
         {node}  (userdata|string)  The TreeSitter node to resolve, or the name of that match in self.nodes
@@ -195,7 +207,14 @@ BufflsTsQueryHandlerContext:is_node_in_range({node})
 
 
                                      *BufflsTsQueryHandlerContext:is_after_node*
-BufflsTsQueryHandlerContext:is_after_node()
+BufflsTsQueryHandlerContext:is_after_node({node})
+    Check if a the cursor if after a node.
+
+    Parameters: ~
+        {node}  (userdata|string)  The TreeSitter node to resolve, or the name of that match in self.nodes
+
+    Returns: ~
+        (boolean)
 
 
 ================================================================================
