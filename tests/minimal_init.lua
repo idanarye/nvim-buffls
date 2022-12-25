@@ -1,3 +1,5 @@
+vim.o.shada = ''
+
 vim.opt.runtimepath:append { '.' }
 vim.opt.runtimepath:append { '../plenary.nvim' }
 vim.opt.runtimepath:append { '../null-ls.nvim' }
