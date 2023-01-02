@@ -19,7 +19,7 @@
 ---<   Choose the appropriate BuffLS class:
 ---   - |BufflsTsLs| for using manually written TreeSitter queries. (like in
 ---     the example)
----   - |BufflsForBash| - a subclass of *BufflsTsLs* with helpers that work
+---   - |BufflsForBash| - a subclass of |BufflsTsLs| with helpers that work
 ---     with Bash flags.
 ---   - Custom and/or 3rd party subclasses?
 ---3. Use `ls` to configure the BuffLS behavior for that buffer (see the
