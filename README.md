@@ -3,9 +3,22 @@
 INTRODUCTION
 ============
 
-BuffLS is a null-ls source for adding LSP-like functionality for a specific buffer. This is useful for small scripts that use Neovim buffers for input, and want to enhance their UX with things like custom completion or code actions. Writing a separate null-ls source for each such script is too cumbersome, so BuffLS acts as a single source that redirects the LSP requests to objects stored in a buffer variable.
+BuffLS is a [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim) source for adding LSP-like functionality for a specific buffer. This is useful for small scripts that use Neovim buffers for input, and want to enhance their UX with things like custom completion or code actions. Writing a separate null-ls source for each such script is too cumbersome, so BuffLS acts as a single source that redirects the LSP requests to objects stored in a buffer variable.
 
 BuffLS was created as a supplemental plugin for [Moonicipal](https://github.com/idanarye/nvim-moonicipal), but can be used independent of it.
+
+SETUP
+=====
+
+Install BuffLS with your plugin manager of choice, and register the BuffLS source in null-ls:
+
+```lua
+require'null-ls'.setup {
+    sources = {
+        require'buffls',
+    };
+}
+```
 
 CONTRIBUTION GUIDELINES
 =======================
