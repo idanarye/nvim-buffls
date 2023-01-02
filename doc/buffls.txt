@@ -1,4 +1,4 @@
-================================================================================
+==============================================================================
 BuffLS - Buffer Specific null-ls Source                                 *buffls*
 
 BuffLS is a null-ls source for adding LSP-like functionality for a specific
@@ -12,18 +12,18 @@ BuffLS was created as a supplemental plugin for Moonicipal
 (https://github.com/idanarye/nvim-moonicipal), but can be used independent
 of it.
 
-================================================================================
+==============================================================================
 Table of Contents                                              *buffls.contents*
 
-BuffLS - Buffer Specific null-ls Source·································|buffls|
-BuffLS setup······················································|buffls-setup|
-BuffLS basic usage··········································|buffls-basic-usage|
-BuffLS based on TreeSitter queries··································|BufflsTsLs|
-TS-based router for specific LSP request type··············|BufflsTsQueryRouter|
-TS-based context for handling LSP request··········|BufflsTsQueryHandlerContext|
-BuffLS for Bash buffer···········································|BufflsForBash|
+BuffLS - Buffer Specific null-ls Source ······························· |buffls|
+BuffLS setup ···················································· |buffls-setup|
+BuffLS basic usage ········································ |buffls-basic-usage|
+BuffLS based on TreeSitter queries ······························· |buffls.TsLs|
+TS-based router for specific LSP request type ··········· |buffls.TsQueryRouter|
+TS-based context for handling LSP request ······· |buffls.TsQueryHandlerContext|
+BuffLS for Bash buffer ········································ |buffls.ForBash|
 
-================================================================================
+==============================================================================
 BuffLS setup                                                      *buffls-setup*
 
 Register the BuffLS source in null-ls:
@@ -35,7 +35,7 @@ Register the BuffLS source in null-ls:
     }
 <
 
-================================================================================
+==============================================================================
 BuffLS basic usage                                          *buffls-basic-usage*
 
 1. Create a buffer and set it to the appropriate langauge
@@ -51,8 +51,8 @@ BuffLS basic usage                                          *buffls-basic-usage*
 3. Use `ls` to configure the BuffLS behavior for that buffer (see the
    documentation of `ls`'s class)
 
-================================================================================
-BuffLS based on TreeSitter queries                                  *BufflsTsLs*
+==============================================================================
+BuffLS based on TreeSitter queries                                 *buffls.TsLs*
 
 BufflsTsLs                                                          *BufflsTsLs*
     A BuffLS that uses TreeSitter queries. It has |BufflsTsQueryRouter| fields
@@ -70,7 +70,7 @@ BufflsTsLs                                                          *BufflsTsLs*
         {completion}   (BufflsTsQueryRouter)  handles LSP completion
 
 
-BufflsTsLs:new({language})                                      *BufflsTsLs:new*
+BufflsTsLs:new({language})                                     *buffls.TsLs:new*
     Create a BuffLS without a buffer. The specified language must be
     installed (see |:TSInstall|). |BufflsTsLs:for_buffer| is usually preferred.
 
@@ -81,7 +81,7 @@ BufflsTsLs:new({language})                                      *BufflsTsLs:new*
         (BufflsTsLs)
 
 
-BufflsTsLs:for_buffer({bufnr?})                          *BufflsTsLs:for_buffer*
+BufflsTsLs:for_buffer({bufnr?})                         *buffls.TsLs:for_buffer*
     Assign a BuffLS to a buffer. Can be called on an existing BuffLS, or on the
     class itself to create a new langauge server and immediately attach it to a
     buffer. In the latter case, the BuffLS will use the 'filetype' of the buffer
@@ -94,14 +94,14 @@ BufflsTsLs:for_buffer({bufnr?})                          *BufflsTsLs:for_buffer*
         (BufflsTsLs)
 
 
-BufflsTsLs:add_action({title}, {action})                 *BufflsTsLs:add_action*
+BufflsTsLs:add_action({title}, {action})                *buffls.TsLs:add_action*
 
     Parameters: ~
         {title}   (string)    the text to display to the use when choosing actions
         {action}  (function)  the action itself
 
 
-                                   *BufflsTsLs:add_completions_direct_generator*
+                                  *buffls.TsLs:add_completions_direct_generator*
 BufflsTsLs:add_completions_direct_generator()
     Register a function that generates a list of code completions.
 
@@ -109,7 +109,7 @@ BufflsTsLs:add_completions_direct_generator()
     completions under an `items` field.
 
 
-                                       *BufflsTsLs:add_completions_ts_generator*
+                                      *buffls.TsLs:add_completions_ts_generator*
 BufflsTsLs:add_completions_ts_generator()
     Register a function that generates a list of code completions only when the
     cursor position matches the TreeSitter query.
@@ -121,8 +121,8 @@ BufflsTsLs:add_completions_ts_generator()
     queries interface with `BufflsTsLs` generators.
 
 
-================================================================================
-TS-based router for specific LSP request type              *BufflsTsQueryRouter*
+==============================================================================
+TS-based router for specific LSP request type             *buffls.TsQueryRouter*
 
 BufflsTsQueryRouter                                        *BufflsTsQueryRouter*
     Responsible for a single type of LSP request that a |BufflsTsLs| handles.
@@ -133,7 +133,7 @@ BufflsTsQueryRouter                                        *BufflsTsQueryRouter*
         {language}  (string)  the language for TS queries
 
 
-                                      *BufflsTsQueryRouter:add_direct_generator*
+                                     *buffls.TsQueryRouter:add_direct_generator*
 BufflsTsQueryRouter:add_direct_generator({generator})
     Register a function that receives the parameters object from null-ls and
     returns a result in null-ls' format. This means that it needs to return a
@@ -143,7 +143,7 @@ BufflsTsQueryRouter:add_direct_generator({generator})
         {generator}  (function)
 
 
-                                          *BufflsTsQueryRouter:add_ts_generator*
+                                         *buffls.TsQueryRouter:add_ts_generator*
 BufflsTsQueryRouter:add_ts_generator({query}, {generator})
     Register a |BufflsTsGenerator| that runs only when the specified query
     matches the cursor's position.
@@ -166,8 +166,8 @@ BufflsTsGenerator                                            *BufflsTsGenerator*
         fun(ctx:BufflsTsQueryHandlerContext):table[]
 
 
-================================================================================
-TS-based context for handling LSP request          *BufflsTsQueryHandlerContext*
+==============================================================================
+TS-based context for handling LSP request         *buffls.TsQueryHandlerContext*
 
 BufflsTsQueryHandlerContext                        *BufflsTsQueryHandlerContext*
     The context passed to |BufflsTsLs| query-based generators.
@@ -183,7 +183,7 @@ BufflsTsQueryHandlerContext                        *BufflsTsQueryHandlerContext*
         {nodes}     ()
 
 
-BufflsTsQueryHandlerContext:text({node})      *BufflsTsQueryHandlerContext:text*
+BufflsTsQueryHandlerContext:text({node})     *buffls.TsQueryHandlerContext:text*
     Resolve a TS node to the text it represents.
 
     Parameters: ~
@@ -193,7 +193,7 @@ BufflsTsQueryHandlerContext:text({node})      *BufflsTsQueryHandlerContext:text*
         (string)
 
 
-                                  *BufflsTsQueryHandlerContext:is_node_in_range*
+                                 *buffls.TsQueryHandlerContext:is_node_in_range*
 BufflsTsQueryHandlerContext:is_node_in_range({node})
     Check if a the cursor if within a node.
 
@@ -206,7 +206,7 @@ BufflsTsQueryHandlerContext:is_node_in_range({node})
         (boolean)
 
 
-                                     *BufflsTsQueryHandlerContext:is_after_node*
+                                    *buffls.TsQueryHandlerContext:is_after_node*
 BufflsTsQueryHandlerContext:is_after_node({node})
     Check if a the cursor if after a node.
 
@@ -217,17 +217,20 @@ BufflsTsQueryHandlerContext:is_after_node({node})
         (boolean)
 
 
-================================================================================
-BuffLS for Bash buffer                                           *BufflsForBash*
+==============================================================================
+BuffLS for Bash buffer                                          *buffls.ForBash*
 
-BufflsForBash                                                    *BufflsForBash*
+BufflsForBash : BufflsTsLs                                       *BufflsForBash*
     An extension to |BufflsTsLs| for working with with Bash buffers.
 
     Create and register instances of with `for_buffer` like you would a
     |BufflsTsLs|.
 
+    Fields: ~
 
-BufflsForBash:add_flag({flag}, {args?})                 *BufflsForBash:add_flag*
+
+
+BufflsForBash:add_flag({flag}, {args?})                *buffls.ForBash:add_flag*
     Add completion for a flag.
 
     The flag name(s) must be given together with the preceding `-` or `--`. The

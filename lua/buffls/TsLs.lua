@@ -1,4 +1,4 @@
----@mod BufflsTsLs BuffLS based on TreeSitter queries
+---@mod buffls.TsLs BuffLS based on TreeSitter queries
 
 local BufflsTsQueryRouter = require'buffls.TsQueryRouter'
 

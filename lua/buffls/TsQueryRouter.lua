@@ -1,4 +1,4 @@
----@mod BufflsTsQueryRouter TS-based router for specific LSP request type
+---@mod buffls.TsQueryRouter TS-based router for specific LSP request type
 
 local util = require'buffls.util'
 

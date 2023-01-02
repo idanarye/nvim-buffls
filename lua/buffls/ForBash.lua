@@ -1,4 +1,4 @@
----@mod BufflsForBash BuffLS for Bash buffer
+---@mod buffls.ForBash BuffLS for Bash buffer
 
 local BufflsTsLs = require'buffls.TsLs'
 
