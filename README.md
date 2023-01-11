@@ -7,6 +7,9 @@ BuffLS is a [null-ls](https://github.com/jose-elias-alvarez/null-ls.nvim) source
 
 BuffLS was created as a supplemental plugin for [Moonicipal](https://github.com/idanarye/nvim-moonicipal), but can be used independent of it.
 
+For a more through explanation, please to this section in a blog post about Moonicipal: https://dev.to/idanarye/moonicipal-explained-4h02#data-cells-and-buffls
+
+
 SETUP
 =====
 
