@@ -41,7 +41,7 @@ end
 ---@param query string a TreeSitter query
 ---@param generator BufflsTsGenerator
 function BufflsTsQueryRouter:add_ts_generator(query, generator)
-    vim.treesitter.parse_query(self.language, query)
+    vim.treesitter.query.parse(self.language, query)
     table.insert(self.ts_query_generators, {
         query = query,
         generator = generator,
@@ -98,7 +98,7 @@ function BufflsTsQueryRouter:call_all(params, parser)
     local queries = vim.tbl_map(function(generator)
         return '[' .. generator.query .. ']'
     end, self.ts_query_generators)
-    local combined_query = vim.treesitter.query.parse_query(self.language, table.concat(queries))
+    local combined_query = vim.treesitter.query.parse(self.language, table.concat(queries))
 
     for query_idx, captures_array, metadata in combined_query:iter_matches(tstree:root(), params.bufnr) do
         local captures_dict = {}
