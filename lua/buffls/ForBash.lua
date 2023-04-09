@@ -47,7 +47,7 @@ function BufflsForBash:add_flag(flag, args)
     end
 end
 
-local bash_word_query = vim.treesitter.parse_query('bash', '(word) @_')
+local bash_word_query = vim.treesitter.query.parse('bash', '(word) @_')
 
 local function find_real_word_for_completion(ctx)
     for _, node in bash_word_query:iter_captures(ctx.tstree:root(), ctx.params.bufnr) do
