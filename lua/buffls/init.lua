@@ -25,7 +25,7 @@ local LSP_METHODS_TO_OBJECT_METHODS = {
     [null_ls.methods.DIAGNOSTICS_ON_SAVE] = "diagnostics",
     [null_ls.methods.FORMATTING] = "formatting",
     [null_ls.methods.RANGE_FORMATTING] = "formatting",
-    [null_ls.methods.HOVER] = "hover",
+    -- [null_ls.methods.HOVER] = "hover",
     [null_ls.methods.COMPLETION] = "completion",
 }
 
