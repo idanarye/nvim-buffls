@@ -24,8 +24,8 @@ function BufflsTsQueryRouter:new(language)
     }, self)
 end
 
----Register a function that receives the parameters object from null-ls and
----returns a result in null-ls' format. This means that it needs to return a
+---Register a function that receives the parameters object from none-ls and
+---returns a result in none-ls' format. This means that it needs to return a
 ---list of results.
 ---@param generator function
 function BufflsTsQueryRouter:add_direct_generator(generator)
@@ -49,7 +49,7 @@ function BufflsTsQueryRouter:add_ts_generator(query, generator)
 end
 
 ---A function that receives a |BufflsTsQueryHandlerContext| and responds to a
----particualr LSP request type using null-ls format. This means that it needs
+---particualr LSP request type using none-ls format. This means that it needs
 ---to return a list of results.
 ---@alias BufflsTsGenerator fun(ctx: BufflsTsQueryHandlerContext): table[]?
 

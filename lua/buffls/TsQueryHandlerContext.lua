@@ -8,7 +8,7 @@ local util = require'buffls.util'
 ---object of this type, which they can use to access data from the query's
 ---match.
 ---@class BufflsTsQueryHandlerContext
----@field params table the null-ls parameters object
+---@field params table the none-ls parameters object
 ---@field tstree userdata the entire TS tree of the buffer
 ---@field metadata table the TS query's metadata
 ---@field nodes {[string]: userdata} the nodes matched by the TS query

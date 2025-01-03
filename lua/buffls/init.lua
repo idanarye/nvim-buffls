@@ -1,9 +1,9 @@
----@mod buffls BuffLS - Buffer Specific null-ls Source
+---@mod buffls BuffLS - Buffer Specific none-ls Source
 ---@brief [[
----BuffLS is a null-ls source for adding LSP-like functionality for a specific
+---BuffLS is a none-ls source for adding LSP-like functionality for a specific
 ---buffer. This is useful for small scripts that use Neovim buffers for input,
 ---and want to enhance their UX with things like custom completion or code
----actions. Writing a separate null-ls source for each such script is too
+---actions. Writing a separate none-ls source for each such script is too
 ---cumbersome, so BuffLS acts as a single source that redirects the LSP
 ---requests to objects stored in a buffer variable.
 ---

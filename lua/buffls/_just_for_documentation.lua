@@ -1,6 +1,6 @@
 ---@mod buffls-setup BuffLS setup
 ---@brief [[
----Register the BuffLS source in null-ls:
+---Register the BuffLS source in none-ls:
 --->
 ---    require'null-ls'.setup {
 ---        sources = {

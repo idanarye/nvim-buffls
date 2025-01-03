@@ -3,7 +3,7 @@
 local BufflsTsQueryRouter = require'buffls.TsQueryRouter'
 
 ---A BuffLS that uses TreeSitter queries. It has |BufflsTsQueryRouter| fields
----for adding handlers directly, which must return their output in null-ls'
+---for adding handlers directly, which must return their output in none-ls'
 ---format. It also provides helper methods for when that structure is too
 ---complicated for basic usage (e.g. - for code actions just giving a name and
 ---function is often enough for most of BuffLS' use cases)
@@ -70,7 +70,7 @@ end
 ---@param generator fun(ctx: BufflsTsQueryHandlerContext): table[]?
 ---Register a function that generates a list of code completions.
 ---
----Unlike null-ls' format, here the generator does not need to put the
+---Unlike none-ls' format, here the generator does not need to put the
 ---completions under an `items` field.
 function BufflsTsLs:add_completions_direct_generator(generator)
     self.completion:add_direct_generator(function(params)
@@ -88,7 +88,7 @@ end
 ---Register a function that generates a list of code completions only when the
 ---cursor position matches the TreeSitter query.
 ---
----Unlike null-ls' format, here the generator does not need to put the
+---Unlike none-ls' format, here the generator does not need to put the
 ---completions under an `items` field.
 ---
 ---Refer to |BufflsTsQueryRouter:add_ts_generator| to learn how TreeSitter

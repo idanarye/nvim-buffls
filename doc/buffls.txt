@@ -1,10 +1,10 @@
 ==============================================================================
-BuffLS - Buffer Specific null-ls Source                                 *buffls*
+BuffLS - Buffer Specific none-ls Source                                 *buffls*
 
-BuffLS is a null-ls source for adding LSP-like functionality for a specific
+BuffLS is a none-ls source for adding LSP-like functionality for a specific
 buffer. This is useful for small scripts that use Neovim buffers for input,
 and want to enhance their UX with things like custom completion or code
-actions. Writing a separate null-ls source for each such script is too
+actions. Writing a separate none-ls source for each such script is too
 cumbersome, so BuffLS acts as a single source that redirects the LSP
 requests to objects stored in a buffer variable.
 
@@ -15,7 +15,7 @@ of it.
 ==============================================================================
 Table of Contents                                              *buffls.contents*
 
-BuffLS - Buffer Specific null-ls Source ······························· |buffls|
+BuffLS - Buffer Specific none-ls Source ······························· |buffls|
 BuffLS setup ···················································· |buffls-setup|
 BuffLS basic usage ········································ |buffls-basic-usage|
 BuffLS based on TreeSitter queries ······························· |buffls.TsLs|
@@ -26,7 +26,7 @@ BuffLS for Bash buffer ····························�
 ==============================================================================
 BuffLS setup                                                      *buffls-setup*
 
-Register the BuffLS source in null-ls:
+Register the BuffLS source in none-ls:
 >
     require'null-ls'.setup {
         sources = {
@@ -56,7 +56,7 @@ BuffLS based on TreeSitter queries                                 *buffls.TsLs*
 
 BufflsTsLs                                                          *BufflsTsLs*
     A BuffLS that uses TreeSitter queries. It has |BufflsTsQueryRouter| fields
-    for adding handlers directly, which must return their output in null-ls'
+    for adding handlers directly, which must return their output in none-ls'
     format. It also provides helper methods for when that structure is too
     complicated for basic usage (e.g. - for code actions just giving a name and
     function is often enough for most of BuffLS' use cases)
@@ -105,7 +105,7 @@ BufflsTsLs:add_action({title}, {action})                *buffls.TsLs:add_action*
 BufflsTsLs:add_completions_direct_generator()
     Register a function that generates a list of code completions.
 
-    Unlike null-ls' format, here the generator does not need to put the
+    Unlike none-ls' format, here the generator does not need to put the
     completions under an `items` field.
 
 
@@ -114,7 +114,7 @@ BufflsTsLs:add_completions_ts_generator()
     Register a function that generates a list of code completions only when the
     cursor position matches the TreeSitter query.
 
-    Unlike null-ls' format, here the generator does not need to put the
+    Unlike none-ls' format, here the generator does not need to put the
     completions under an `items` field.
 
     Refer to |BufflsTsQueryRouter:add_ts_generator| to learn how TreeSitter
@@ -135,8 +135,8 @@ BufflsTsQueryRouter                                        *BufflsTsQueryRouter*
 
                                      *buffls.TsQueryRouter:add_direct_generator*
 BufflsTsQueryRouter:add_direct_generator({generator})
-    Register a function that receives the parameters object from null-ls and
-    returns a result in null-ls' format. This means that it needs to return a
+    Register a function that receives the parameters object from none-ls and
+    returns a result in none-ls' format. This means that it needs to return a
     list of results.
 
     Parameters: ~
@@ -159,7 +159,7 @@ BufflsTsQueryRouter:add_ts_generator({query}, {generator})
 
 BufflsTsGenerator                                            *BufflsTsGenerator*
     A function that receives a |BufflsTsQueryHandlerContext| and responds to a
-    particualr LSP request type using null-ls format. This means that it needs
+    particualr LSP request type using none-ls format. This means that it needs
     to return a list of results.
 
     Type: ~
@@ -177,7 +177,7 @@ BufflsTsQueryHandlerContext                        *BufflsTsQueryHandlerContext*
     match.
 
     Fields: ~
-        {params}    (table)     the null-ls parameters object
+        {params}    (table)     the none-ls parameters object
         {tstree}    (userdata)  the entire TS tree of the buffer
         {metadata}  (table)     the TS query's metadata
         {nodes}     ()
