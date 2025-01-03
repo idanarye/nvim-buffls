@@ -17,9 +17,9 @@ describe('BuffLS based on treesitter', function()
 
     it('Suggests completions', function()
         local ls, client = SingleBufflsWindow('bash', {
-            'command1 ',
-            'command2 ',
-            'command3 ',
+            'command1 ;',
+            'command2 ;',
+            'command3 ;',
         })
         ls:add_completions_ts_generator('((command) @AFTER_HERE (#eq? @AFTER_HERE "command1"))', function()
             return {{

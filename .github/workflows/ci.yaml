@@ -14,7 +14,7 @@ jobs:
       - name: Install Dependencies
         run: |
           git clone --depth 1 https://github.com/idanarye/plenary.nvim --branch async-testing ../plenary.nvim
-          git clone --depth 1 https://github.com/jose-elias-alvarez/null-ls.nvim ../null-ls.nvim
+          git clone --depth 1 https://github.com/nvimtools/none-ls.nvim ../none-ls.nvim
           git clone --depth 1 https://github.com/nvim-treesitter/nvim-treesitter ../nvim-treesitter
       - name: Run tests
         run: |

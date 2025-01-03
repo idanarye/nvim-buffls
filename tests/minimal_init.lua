@@ -2,7 +2,7 @@ vim.o.shada = ''
 
 vim.opt.runtimepath:append { '.' }
 vim.opt.runtimepath:append { '../plenary.nvim' }
-vim.opt.runtimepath:append { '../null-ls.nvim' }
+vim.opt.runtimepath:append { '../none-ls.nvim' }
 vim.opt.runtimepath:append { '../nvim-treesitter' }
 
 vim.o.virtualedit = 'all' -- to support end of line completions without going into insert mode
