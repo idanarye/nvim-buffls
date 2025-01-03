@@ -6,4 +6,4 @@ test:
 
 docs:
 	mkdir -p doc
-	lemmy-help --prefix-func lua/buffls/{init,_just_for_documentation,TsLs,TsQueryRouter,TsQueryHandlerContext,ForBash}.lua | tee doc/buffls.txt
+	lemmy-help --prefix-func lua/buffls/{init,_just_for_documentation,QueryRouter,TsLs,TsQueryRouter,TsQueryHandlerContext,ForBash,LineList}.lua | tee doc/buffls.txt
