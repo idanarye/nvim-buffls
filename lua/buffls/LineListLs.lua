@@ -47,4 +47,34 @@ function BufflsLineListLs:for_buffer(bufnr)
     return self
 end
 
+---@param title string the text to display to the use when choosing actions
+---@param action function the action itself
+function BufflsLineListLs:add_action(title, action)
+    self.actions:add_direct_generator(function(params)
+        return {{
+            title = title,
+            action = function()
+                action(params)
+            end,
+        }}
+    end)
+end
+
+---@param title string the text to display to the use when choosing actions
+---@param gen_new_lines fun(params): string[]
+function BufflsLineListLs:add_insertion_action(title, gen_new_lines)
+    self:add_action(title, function(params)
+        local new_lines = gen_new_lines(params)
+        if new_lines ~= nil and next(new_lines) ~= nil then
+            local current_lines = vim.api.nvim_buf_get_lines(params.bufnr, 0, -1, true)
+            local replacement_start = #current_lines
+            local replacement_end = replacement_start
+            while current_lines[replacement_start] == '' do
+                replacement_start = replacement_start - 1
+            end
+            vim.api.nvim_buf_set_lines(params.bufnr, replacement_start, replacement_end, true, new_lines)
+        end
+    end)
+end
+
 return BufflsLineListLs
