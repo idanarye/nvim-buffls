@@ -4,14 +4,40 @@ local BufflsQueryRouter = require'buffls.QueryRouter'
 
 ---@class BufflsLineListLs
 ---@field gen_entries fun(): table<string, any>
+---@field preview fun(string, any): (string? | any)
 local BufflsLineListLs = {}
 BufflsLineListLs.__index = BufflsLineListLs
+
+---@param name string
+---@param data any
+---@return string?
+function BufflsLineListLs:_preview_for(name, data)
+    if self.preview == nil then
+        return
+    end
+    local preview = self.preview(name, data)
+    if preview == nil then
+        return
+    elseif type(preview) == 'string' then
+        return preview
+    elseif vim.islist(preview) and vim.iter(preview):all(function(line)
+        return type(line) == 'string'
+    end) then
+        return table.concat(preview, '\n')
+    else
+        return vim.inspect(preview)
+    end
+end
 
 local function init_for_gen_entries(ls)
     ls.completion:add_direct_generator(function()
         return {{
-            items = vim.iter(pairs(ls.gen_entries())):map(function(name)
-                return {label = name}
+            items = vim.iter(pairs(ls.gen_entries())):map(function(name, data)
+                local item = {
+                    label = name,
+                    documentation = ls:_preview_for(name, data),
+                }
+                return item
             end):totable()
         }}
     end)
