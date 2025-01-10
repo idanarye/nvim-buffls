@@ -4,7 +4,7 @@ local BufflsQueryRouter = require'buffls.QueryRouter'
 
 ---@class BufflsLineListLs
 ---@field gen_entries fun(): table<string, any>
----@field preview fun(string, any): (string? | any)
+---@field preview fun(string, any): any?
 local BufflsLineListLs = {}
 BufflsLineListLs.__index = BufflsLineListLs
 
@@ -87,7 +87,7 @@ function BufflsLineListLs:add_action(title, action)
 end
 
 ---@param title string the text to display to the use when choosing actions
----@param gen_new_lines fun(params): string[]
+---@param gen_new_lines fun(params): string[]?
 function BufflsLineListLs:add_insertion_action(title, gen_new_lines)
     self:add_action(title, function(params)
         local new_lines = gen_new_lines(params)
@@ -100,6 +100,48 @@ function BufflsLineListLs:add_insertion_action(title, gen_new_lines)
             end
             vim.api.nvim_buf_set_lines(params.bufnr, replacement_start, replacement_end, true, new_lines)
         end
+    end)
+end
+
+---@param title string the text to display to the use when choosing actions
+---@param gen_filter? fun(params): (false | (fun(name: string, data: any): boolean)?)
+function BufflsLineListLs:add_insert_action_with_moonicipal(title, gen_filter)
+    --Require it now to fail early if it doesn't exist
+    local moonicipal = require'moonicipal'
+    self:add_insertion_action(title, function(params)
+        local filter
+        if gen_filter then
+            filter = gen_filter(params)
+        end
+        if filter == false then
+            return
+        end
+        local entries = self.gen_entries()
+        local it = vim.iter(entries)
+        local current_entries = {}
+        for _, line in ipairs(vim.api.nvim_buf_get_lines(params.bufnr, 0, -1, true)) do
+            current_entries[line] = true
+        end
+        current_entries[''] = nil
+        it = it:filter(function(name)
+            return not current_entries[name]
+        end)
+        if filter then
+            it = it:filter(filter)
+        end
+        it = it:map(function(name)
+            return name
+        end)
+        local preview
+        if self.preview then
+            function preview(name)
+                return self:_preview_for(name, entries[name])
+            end
+        end
+        return moonicipal.select(it:totable(), {
+            preview = preview,
+            multi = true,
+        })
     end)
 end
 
