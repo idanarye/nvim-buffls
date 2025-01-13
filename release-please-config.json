@@ -1,0 +1,9 @@
+{
+    "release-type": "simple",
+    "packages": {
+        ".": {
+            "package-name": "nvim-buffls",
+            "bump-minor-pre-major": true
+        }
+    }
+}
