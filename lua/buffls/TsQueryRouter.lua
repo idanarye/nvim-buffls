@@ -60,9 +60,17 @@ function BufflsTsQueryRouter:call_all(params, parser)
     local results = {}
     local results_len = 0
 
+    local parsed = parser:parse()
+    local tstree = unpack(parsed)
+
+    local ctx_for_direct_generator = {
+        params = params,
+        tstree = tstree,
+    }
+
     for _, generator in ipairs(self.direct_generators) do
         util.resilient(function()
-            local handler_result = generator(params)
+            local handler_result = generator(ctx_for_direct_generator)
             if handler_result then
                 for _, item in ipairs(handler_result) do
                     results_len = results_len + 1
@@ -73,28 +81,6 @@ function BufflsTsQueryRouter:call_all(params, parser)
     end
 
     local range = util.normalize_range(params)
-    local function is_node_in_range(node)
-        local sr, sc, er, ec = node:range()
-        sr = sr + 1
-        sc = sc + 1
-        er = er + 1
-        ec = ec + 1
-        if range.end_row < sr then
-            return false
-        end
-        if range.end_row == sr and range.end_col < sc then
-            return false
-        end
-        if er < range.row then
-            return false
-        end
-        if er == range.row and ec < range.col then
-            return false
-        end
-        return true
-    end
-    local parsed = parser:parse()
-    local tstree = unpack(parsed)
     local queries = vim.tbl_map(function(generator)
         return '[' .. generator.query .. ']'
     end, self.ts_query_generators)
