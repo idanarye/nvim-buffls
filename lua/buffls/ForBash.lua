@@ -153,7 +153,10 @@ function BufflsForBash:new()
             return
         end
         local real_word = find_real_word_for_completion(ctx)
-        local possible_args = flag_args(real_word)
+        local ctx_for_completer = vim.tbl_extend("error", {
+            param_arg = real_word,
+        }, ctx)
+        local possible_args = flag_args(ctx_for_completer)
         if not possible_args then
             return
         end
