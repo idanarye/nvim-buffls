@@ -143,9 +143,7 @@ function BufflsForBash:new()
         local result = {}
         local real_word = find_real_word_for_completion(ctx)
         for flag in pairs(ls.flags) do
-            if vim.startswith(flag, real_word) then
-                table.insert(result, {label=flag})
-            end
+            table.insert(result, {label=flag})
         end
         return result
     end)
@@ -166,9 +164,7 @@ function BufflsForBash:new()
                     table.insert(result, {label=item})
                 end
             else
-                if vim.startswith(item.label, real_word) then
-                    table.insert(result, item)
-                end
+                table.insert(result, item)
             end
         end
         return result
