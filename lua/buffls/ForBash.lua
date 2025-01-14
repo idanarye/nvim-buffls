@@ -16,7 +16,7 @@ local BufflsForBash = setmetatable({}, {__index = BufflsTsLs})
 ---@private
 BufflsForBash.__index = BufflsForBash
 
----@param completer fun(ctx: table): table
+---@param completer fun(ctx: table): table?
 function BufflsForBash:add_cli_arg(completer)
     table.insert(self.arg_completers, completer)
 end
