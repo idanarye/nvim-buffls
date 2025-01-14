@@ -75,6 +75,20 @@ local function normalize_completion(completion)
     end
 end
 
+---@param bufnr? integer the buffer number. Leave empty for current buffer.
+---@return BufflsForBash
+function BufflsForBash:for_buffer(bufnr)
+    bufnr = bufnr or 0
+    if vim.api.nvim_get_option_value('filetype', {buf = bufnr}) == '' then
+        vim.api.nvim_set_option_value('filetype', 'bash', {buf = bufnr})
+    end
+    if self.__index == self then
+        self = self:new()
+    end
+    vim.api.nvim_buf_set_var(bufnr, 'buffls', function() return self end)
+    return self
+end
+
 ---@private
 ---@return BufflsForBash
 function BufflsForBash:new()
