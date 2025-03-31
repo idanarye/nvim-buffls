@@ -86,7 +86,16 @@ function BufflsTsQueryRouter:call_all(params, parser)
     end, self.ts_query_generators)
     local combined_query = vim.treesitter.query.parse(self.language, table.concat(queries))
 
-    for query_idx, captures_array, metadata in combined_query:iter_matches(tstree:root(), params.bufnr) do
+    for query_idx, captures_array, metadata in combined_query:iter_matches(
+        tstree:root(),
+        params.bufnr,
+        nil,
+        nil,
+        {
+            -- TODO: Remove this (since Neovim says it'll remove it eventually) and handle the multiple returns
+            all = false,
+        }
+    ) do
         local captures_dict = {}
         for capture_idx, capture_value in pairs(captures_array) do
             captures_dict[combined_query.captures[capture_idx]] = capture_value
