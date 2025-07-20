@@ -54,6 +54,17 @@ function BufflsTsLs:for_buffer(bufnr)
     return self
 end
 
+---Helper method for running a function on the BuffLS and returning the same
+---BuffLS object.
+---@generic L
+---@param self L
+---@param dlg fun(ls: L)
+---@return L
+function BufflsTsLs.with(self, dlg)
+    dlg(self)
+    return self
+end
+
 ---@param title string the text to display to the use when choosing actions
 ---@param action function the action itself
 function BufflsTsLs:add_action(title, action)
