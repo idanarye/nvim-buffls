@@ -57,14 +57,23 @@ end
 
 local bash_word_query = vim.treesitter.query.parse('bash', '(word) @_')
 
-local function find_real_word_for_completion(ctx)
+local function find_range_of_real_word_for_completion(ctx)
     for _, node in bash_word_query:iter_captures(ctx.tstree:root(), ctx.params.bufnr) do
         if ctx:is_node_in_range(node) then
             local sr, sc = node:range()
-            return table.concat(vim.api.nvim_buf_get_text(ctx.params.bufnr, sr, sc, ctx.params.row - 1, ctx.params.col, {}), '\n')
+            return sr, sc
         end
     end
-    return ''
+    return nil
+end
+
+local function find_real_word_for_completion(ctx)
+    local sr, sc = find_range_of_real_word_for_completion(ctx)
+    if sr then
+        return table.concat(vim.api.nvim_buf_get_text(ctx.params.bufnr, sr, sc, ctx.params.row - 1, ctx.params.col, {}), '\n')
+    else
+        return ''
+    end
 end
 
 local function normalize_completion(completion)
@@ -142,8 +151,28 @@ function BufflsForBash:new()
     ls:add_completions_ts_generator('((word) @flag (#match? @flag "^-")) @HERE', function(ctx)
         local result = {}
         local real_word = find_real_word_for_completion(ctx)
+        local real_word_start_row, real_word_start_col = find_range_of_real_word_for_completion(ctx)
         for flag in pairs(ls.flags) do
-            table.insert(result, {label=flag})
+            local textEdit = nil
+            if real_word_start_row then
+                textEdit = {
+                    newText = flag,
+                    insert = {
+                        start = {
+                            line = real_word_start_row,
+                            character = real_word_start_col,
+                        },
+                        ['end'] = {
+                            line = ctx.params.row - 1,
+                            character = ctx.params.col,
+                        },
+                    },
+                }
+            end
+            table.insert(result, {
+                label = flag,
+                textEdit = textEdit,
+            })
         end
         return result
     end)
