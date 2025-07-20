@@ -98,7 +98,6 @@ function BufflsForBash:for_buffer(bufnr)
     return self
 end
 
----@private
 ---@return BufflsForBash
 function BufflsForBash:new()
     local ls = setmetatable(BufflsTsLs:new('bash'), self)
