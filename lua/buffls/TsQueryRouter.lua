@@ -98,6 +98,9 @@ function BufflsTsQueryRouter:call_all(params, parser)
     ) do
         local captures_dict = {}
         for capture_idx, capture_value in pairs(captures_array) do
+            if type(capture_value) == 'table' then
+                capture_value = capture_value[1]
+            end
             captures_dict[combined_query.captures[capture_idx]] = capture_value
         end
         local ctx = setmetatable({
