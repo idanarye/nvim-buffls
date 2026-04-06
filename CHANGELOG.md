@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.2.1](https://github.com/idanarye/nvim-buffls/compare/v0.2.0...v0.2.1) (2026-04-06)
+
+
+### Features
+
+* Add `BufflsTsLs:with` ([7237858](https://github.com/idanarye/nvim-buffls/commit/7237858614f802fbfd1e24f25e8f17786d00b631))
+* Make `ForBash:new` non-private (this will be needed for Moonicipal) ([ee53e57](https://github.com/idanarye/nvim-buffls/commit/ee53e5771f86e8f661c9abf98347958c054203f9))
+
+
+### Bug Fixes
+
+* Make the nodes table agnostic to whether `iter_matches` returns arrays of arrays of nodes in the captures array ([7da9b1e](https://github.com/idanarye/nvim-buffls/commit/7da9b1ed7935bd717a0e1744279ec9e148ac382e))
+
 ## [0.2.0](https://github.com/idanarye/nvim-buffls/compare/v0.1.0...v0.2.0) (2025-07-20)
 
 
