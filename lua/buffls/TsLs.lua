@@ -72,7 +72,7 @@ function BufflsTsLs:add_action(title, action)
         return {{
             title = title,
             action = function()
-                action(params)
+                require'buffls.util'.defer_to_coroutine(action, params)
             end,
         }}
     end)

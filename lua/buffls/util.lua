@@ -24,4 +24,21 @@ function M.normalize_range(params)
     end
 end
 
+function M.defer_to_coroutine(dlg, ...)
+    local co = coroutine.create(function(...)
+        xpcall(dlg, function(err)
+            if type(err) ~= 'string' then
+                err = vim.inspect(err)
+            end
+            local traceback = debug.traceback(err, 2)
+            traceback = string.gsub(traceback, '\t', string.rep(' ', 8))
+            vim.notify(traceback, vim.log.levels.ERROR, {
+                title = 'ERROR in a coroutine'
+            })
+        end, ...)
+    end)
+    coroutine.resume(co, ...)
+    return co
+end
+
 return M
