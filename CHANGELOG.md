@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.2.2](https://github.com/idanarye/nvim-buffls/compare/v0.2.1...v0.2.2) (2026-05-10)
+
+
+### Bug Fixes
+
+* Run actions in coroutines ([00d6f52](https://github.com/idanarye/nvim-buffls/commit/00d6f529d283f2769e4d3d80b972d08e8b59e113))
+
 ## [0.2.1](https://github.com/idanarye/nvim-buffls/compare/v0.2.0...v0.2.1) (2026-04-06)
 
 
